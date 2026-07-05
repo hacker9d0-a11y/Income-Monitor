@@ -10,7 +10,68 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: bank
+    description: Bank account operations
 paths:
+  /bank/account:
+    get:
+      operationId: getBankAccount
+      tags: [bank]
+      summary: Get the bank account
+      description: Returns the single bank account's public state, or 404 if it hasn't been set up yet
+      responses:
+        "200":
+          description: Account found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BankAccountState"
+        "404":
+          description: No account has been set up yet
+  /bank/account/setup:
+    post:
+      operationId: setupBankAccount
+      tags: [bank]
+      summary: Create the bank account
+      description: Creates the account the first time. Fails with 409 if one already exists.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BankAccountCredentials"
+      responses:
+        "201":
+          description: Account created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BankAccountState"
+        "409":
+          description: Account already exists
+  /bank/account/login:
+    post:
+      operationId: loginBankAccount
+      tags: [bank]
+      summary: Log in to the bank account
+      description: Validates the password hash against the stored account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BankAccountCredentials"
+      responses:
+        "200":
+          description: Valid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BankAccountState"
+        "401":
+          description: Invalid password
+        "404":
+          description: No account has been set up yet
   /healthz:
     get:
       operationId: healthCheck
@@ -33,4 +94,23 @@ components:
           type: string
       required:
         - status
+    BankAccountState:
+      type: object
+      properties:
+        startTime:
+          type: string
+          format: date-time
+        hourlyRate:
+          type: integer
+      required:
+        - startTime
+        - hourlyRate
+    BankAccountCredentials:
+      type: object
+      properties:
+        passwordHash:
+          type: string
+          description: SHA-256 hex digest computed client-side, never the plaintext password
+      required:
+        - passwordHash
 

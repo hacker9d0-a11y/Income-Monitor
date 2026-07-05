@@ -13,6 +13,8 @@
     "serverless-http": "^3.2.0"
   },
   "devDependencies": {
+    "@esbuild/android-arm64": "^0.28.1",
+    "esbuild": "0.28.1",
     "prettier": "^3.8.4",
     "typescript": "~5.9.3"
   }

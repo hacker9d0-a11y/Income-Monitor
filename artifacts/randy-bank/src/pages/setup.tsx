@@ -3,7 +3,7 @@ import { Lock, Key, Eye, EyeOff, Building } from 'lucide-react';
 import { useBankState } from '../hooks/use-bank-state';
 import { Button } from '@/components/ui/button';
 
-export function SetupScreen({ setupAccount }: { setupAccount: (pwd: string) => Promise<void> }) {
+export function SetupScreen({ setupAccount }: { setupAccount: (pwd: string) => Promise<boolean> }) {
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -24,8 +24,12 @@ export function SetupScreen({ setupAccount }: { setupAccount: (pwd: string) => P
     }
 
     setLoading(true);
-    await setupAccount(password);
+    const success = await setupAccount(password);
     setLoading(false);
+
+    if (!success) {
+      setError('Could not create the account. Please try again.');
+    }
   };
 
   return (
