@@ -1,6 +1,6 @@
 [build]
   # Instala todo el monorepo y compila solo lo necesario para el sitio.
-  command = "corepack enable && pnpm install --frozen-lockfile && pnpm --filter @workspace/randy-bank build"
+  command = "corepack enable && pnpm install --no-frozen-lockfile && pnpm --filter @workspace/randy-bank build"
   publish = "artifacts/randy-bank/dist/public"
   functions = "netlify/functions"
 
