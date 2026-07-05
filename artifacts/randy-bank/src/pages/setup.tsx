@@ -35,7 +35,7 @@ export function SetupScreen({ setupAccount }: { setupAccount: (pwd: string) => P
           <Building className="w-8 h-8" />
         </div>
         
-        <h1 className="text-2xl font-bold text-white mb-2 tracking-tight">Randy Alejandro Bank</h1>
+        <h1 className="text-2xl font-bold text-white mb-2 tracking-tight">Manuel Gustavo Bank</h1>
         <p className="text-muted-foreground text-center mb-10 text-sm">Create your password to get started</p>
         
         <div className="w-full bg-card rounded-2xl p-6 border border-card-border shadow-2xl">

@@ -269,7 +269,7 @@ export function DashboardScreen({ startTime, hourlyRate, logout }: DashboardProp
               <Building className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-white font-bold tracking-tight text-sm">Randy Alejandro Bank</h1>
+              <h1 className="text-white font-bold tracking-tight text-sm">Manuel Gustavo Bank</h1>
               <p className="text-muted-foreground text-xs font-medium">Generative Savings Account</p>
             </div>
           </div>
