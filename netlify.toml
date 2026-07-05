@@ -1,0 +1,27 @@
+[build]
+  # Instala todo el monorepo y compila solo lo necesario para el sitio.
+  command = "corepack enable && pnpm install --frozen-lockfile && pnpm --filter @workspace/randy-bank build"
+  publish = "artifacts/randy-bank/dist/public"
+  functions = "netlify/functions"
+
+[build.environment]
+  # Requeridas por vite.config.ts en build time (no afectan producción real).
+  PORT = "8888"
+  BASE_PATH = "/"
+  NODE_VERSION = "22"
+
+# Todo lo que pegue a /api/* se enruta a la Netlify Function que envuelve Express.
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+# SPA fallback: cualquier ruta no encontrada cae en index.html (React Router / wouter).
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["pg"]

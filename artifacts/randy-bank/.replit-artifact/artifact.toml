@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "Randy Alejandro Bank"
+version = "1.0.0"
+id = "artifacts/randy-bank"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20597
+
+[services.development]
+run = "pnpm --filter @workspace/randy-bank run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/randy-bank", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/randy-bank/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20597"
+BASE_PATH = "/"
