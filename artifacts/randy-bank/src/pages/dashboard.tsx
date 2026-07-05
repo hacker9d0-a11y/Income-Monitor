@@ -10,91 +10,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import { type Visitor, loadVisitors } from '@/lib/visitors';
 
 interface DashboardProps {
   startTime: string | null;
   hourlyRate: number;
   logout: () => void;
-}
-
-// ── Visitor tracking ──────────────────────────────────────────────────────────
-interface Visitor {
-  id: string;
-  name: string;
-  device: string;
-  location: string;
-  flag: string;
-  time: string; // ISO
-}
-
-const VISITOR_NAMES = [
-  'Carlos M.','Alejandro R.','María G.','Valentina P.','Juan C.',
-  'Sofia L.','Diego H.','Isabella F.','Andrés T.','Camila V.',
-  'Luis E.','Daniela O.','Miguel S.','Gabriela N.','Pablo A.',
-  'Luciana B.','Roberto J.','Natalia K.','Fernando W.','Valeria Q.',
-];
-
-const VISITOR_LOCATIONS = [
-  { city: 'Santo Domingo', flag: '🇩🇴' },
-  { city: 'Santiago, RD',  flag: '🇩🇴' },
-  { city: 'La Romana',     flag: '🇩🇴' },
-  { city: 'Miami, FL',     flag: '🇺🇸' },
-  { city: 'New York, NY',  flag: '🇺🇸' },
-  { city: 'Barcelona',     flag: '🇪🇸' },
-  { city: 'Ciudad de México', flag: '🇲🇽' },
-  { city: 'Bogotá',        flag: '🇨🇴' },
-  { city: 'Buenos Aires',  flag: '🇦🇷' },
-  { city: 'San Juan, PR',  flag: '🇵🇷' },
-  { city: 'Caracas',       flag: '🇻🇪' },
-  { city: 'Lima',          flag: '🇵🇪' },
-];
-
-const VISITOR_DEVICES = ['iPhone 15','Samsung Galaxy S24','MacBook Pro','Windows PC','iPad Pro','Pixel 8','OnePlus 12','Xiaomi 14'];
-
-const VISITORS_KEY = 'randy_bank_visitors';
-const VISITOR_SESSION_KEY = 'randy_bank_visitor_added';
-
-function detectDevice(): string {
-  const ua = navigator.userAgent;
-  if (/iPhone/.test(ua)) return 'iPhone';
-  if (/iPad/.test(ua)) return 'iPad';
-  if (/Android.*Mobile/.test(ua)) return 'Android Phone';
-  if (/Android/.test(ua)) return 'Android Tablet';
-  if (/Macintosh/.test(ua)) return 'Mac';
-  if (/Windows/.test(ua)) return 'Windows PC';
-  if (/Linux/.test(ua)) return 'Linux PC';
-  return 'Dispositivo desconocido';
-}
-
-function pickRandom<T>(arr: T[]): T {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-
-function loadVisitors(): Visitor[] {
-  try {
-    return JSON.parse(localStorage.getItem(VISITORS_KEY) ?? '[]');
-  } catch { return []; }
-}
-
-function saveVisitors(v: Visitor[]) {
-  localStorage.setItem(VISITORS_KEY, JSON.stringify(v));
-}
-
-function addCurrentVisitor(visitors: Visitor[]): Visitor[] {
-  if (sessionStorage.getItem(VISITOR_SESSION_KEY)) return visitors;
-  const loc = pickRandom(VISITOR_LOCATIONS);
-  const entry: Visitor = {
-    id: crypto.randomUUID(),
-    name: pickRandom(VISITOR_NAMES),
-    device: detectDevice(),
-    location: loc.city,
-    flag: loc.flag,
-    time: new Date().toISOString(),
-  };
-  const updated = [entry, ...visitors].slice(0, 50); // keep last 50
-  saveVisitors(updated);
-  sessionStorage.setItem(VISITOR_SESSION_KEY, '1');
-  return updated;
 }
 
 // ── Dominican Republic banks ──────────────────────────────────────────────────
@@ -137,11 +58,9 @@ export function DashboardScreen({ startTime, hourlyRate, logout }: DashboardProp
   const [simDone, setSimDone]             = useState(false);
   const simRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // ── Load + register visitor on mount ──────────────────────────────────────
+  // ── Load visitors (only populated by the hidden invite link now) ──────────
   useEffect(() => {
-    const loaded = loadVisitors();
-    const updated = addCurrentVisitor(loaded);
-    setVisitors(updated);
+    setVisitors(loadVisitors());
   }, []);
 
   // ── Balance / timer effect ─────────────────────────────────────────────────

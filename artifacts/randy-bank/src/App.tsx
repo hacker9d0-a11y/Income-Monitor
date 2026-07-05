@@ -6,6 +6,7 @@ import { useBankState } from './hooks/use-bank-state';
 import { SetupScreen } from './pages/setup';
 import { LoginScreen } from './pages/login';
 import { DashboardScreen } from './pages/dashboard';
+import { InvitePage, INVITE_TOKEN } from './pages/invite';
 import NotFound from '@/pages/not-found';
 import { Loader2 } from 'lucide-react';
 
@@ -54,6 +55,8 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={BankAppShell} />
+      {/* Hidden invite link — never linked from the UI, share the URL directly. */}
+      <Route path={`/invite/${INVITE_TOKEN}`} component={InvitePage} />
       <Route component={NotFound} />
     </Switch>
   );

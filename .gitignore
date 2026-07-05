@@ -47,3 +47,9 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Environment variables (contains the secret invite token, never commit)
+.env
+.env.local
+artifacts/randy-bank/.env
+artifacts/randy-bank/.env.local
