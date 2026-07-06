@@ -3,8 +3,6 @@ import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 import { useBankState } from './hooks/use-bank-state';
-import { SetupScreen } from './pages/setup';
-import { LoginScreen } from './pages/login';
 import { DashboardScreen } from './pages/dashboard';
 import { InvitePage, INVITE_TOKEN } from './pages/invite';
 import NotFound from '@/pages/not-found';
@@ -17,8 +15,6 @@ function BankAppShell() {
     authState, 
     startTime, 
     hourlyRate, 
-    setupAccount, 
-    login, 
     logout,
   } = useBankState();
 
@@ -28,14 +24,6 @@ function BankAppShell() {
         <Loader2 className="w-8 h-8 text-primary animate-spin" />
       </div>
     );
-  }
-
-  if (authState === 'setup') {
-    return <SetupScreen setupAccount={setupAccount} />;
-  }
-
-  if (authState === 'login') {
-    return <LoginScreen login={login} />;
   }
 
   if (authState === 'dashboard') {
