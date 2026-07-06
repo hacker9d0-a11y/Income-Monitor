@@ -35,7 +35,7 @@ export function LoginScreen({ login }: { login: (pwd: string) => Promise<boolean
           <Building className="w-8 h-8" />
         </div>
         
-        <h1 className="text-2xl font-bold text-white mb-2 tracking-tight">Manuel Gustavo Bank</h1>
+        <h1 className="text-2xl font-bold text-white mb-2 tracking-tight">Randy Bank</h1>
         <p className="text-muted-foreground text-center mb-10 text-sm">Enter your password to continue</p>
         
         <div className="w-full bg-card rounded-2xl p-6 border border-card-border shadow-2xl">
