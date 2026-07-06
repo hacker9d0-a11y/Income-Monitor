@@ -1,5 +1,5 @@
 import { Router, type IRouter } from "express";
-import { z } from "zod/v4";
+import { z } from "zod";
 import { db, bankAccountsTable } from "@workspace/db";
 
 const router: IRouter = Router();
