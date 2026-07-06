@@ -206,6 +206,9 @@ importers:
       serverless-http:
         specifier: ^3.2.0
         version: 3.2.0
+      zod:
+        specifier: 'catalog:'
+        version: 3.25.76
     devDependencies:
       '@types/cookie-parser':
         specifier: ^1.4.10
